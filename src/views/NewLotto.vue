@@ -11,7 +11,7 @@
               <input type="text" v-model="lotto.place" class="form-control" placeholder="Lieu" aria-label="Lieu">
             </div>
             <div class="col-sm">
-              <button type="submit" @click.prevent="createdLotto" class="btn btn-primary"> Valider </button>
+              <button type="submit" @click.prevent="createLotto" class="btn btn-primary"> Valider </button>
             </div>
           </div>
         </form>
@@ -22,27 +22,22 @@
 
 <script>
 import { useStore } from '@/store'
-import { v4 as uuid } from 'uuid'
+import { ref } from 'vue'
+import { v4 as uuidv4 } from 'uuid';
 
-export default{
-  setup(){
-    const store = useStore();
-    console.log(store);
-  },
+export default {
+  setup() {
+    const store = useStore()
+    const lotto = ref({
+      date: new Date().toJSON().slice(0,10),
+      place: ""
+    })
 
-  data(){
-    return {
-      lotto: {
-        date: new Date().toJSON().slice(0,10),
-        place: "",
-      }
+    const createLotto = () => {
+      store.lottos.uuid = lotto
     }
-  },
-  
-  methods: {
-    createLotto(){
-      const uuid = uuid();
-    }
+
+    return { lotto, createLotto }
   }
 }
 </script>

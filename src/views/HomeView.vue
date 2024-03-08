@@ -14,7 +14,7 @@ import { useStore } from '@/store'
 export default{
   setup(){
     const store = useStore();
-    console.log(store);
+    console.log(store.lottos);
   },
 }
 </script>

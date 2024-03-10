@@ -1,9 +1,13 @@
 <template>
   <div class="container">
     <div class="row"> 
-      <div class="col">
-        <router-link :to="'/lotto'" class="btn btn-primary"> + </router-link>
-      </div>
+      <router-link :to="'/lotto'" class="col border rounded-3 m-3 p-3">
+      +
+      </router-link>
+      <router-link v-for="(lotto, key) in store.lottos" :to="`lotto/${key}`" class="col border rounded-3 m-3 p-3">
+        {{ lotto.date }}
+        {{ lotto.place }}
+      </router-link>
     </div>
   </div>
 </template>
@@ -12,9 +16,10 @@
 import { useStore } from '@/store'
 
 export default{
-  setup(){
-    const store = useStore();
-    console.log(store.lottos);
+  data(){
+    return {
+      store: useStore()
+    }
   },
 }
 </script>

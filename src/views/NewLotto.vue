@@ -22,22 +22,28 @@
 
 <script>
 import { useStore } from '@/store'
-import { ref } from 'vue'
 import { v4 as uuidv4 } from 'uuid';
 
 export default {
-  setup() {
-    const store = useStore()
-    const lotto = ref({
-      date: new Date().toJSON().slice(0,10),
-      place: ""
-    })
-
-    const createLotto = () => {
-      store.lottos.uuid = lotto
+  data(){
+    return {
+      store: useStore(),
+      lotto: {
+        date: new Date().toJSON().slice(0,10),
+        place: "",
+        players: {
+          [uuidv4()]: {
+            "name": "Josselin",
+            grids: {}
+          }
+        }
+      }
     }
-
-    return { lotto, createLotto }
+  },
+  methods: {
+    createLotto(){
+      this.store.lottos[uuidv4()] = this.lotto
+    }
   }
 }
 </script>

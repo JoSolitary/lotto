@@ -17,6 +17,11 @@ const router = createRouter({
       path: '/lotto',
       name: 'new lotto',
       component: () => import('./views/NewLotto.vue')
+    },
+    {
+      path: '/lotto/:id',
+      name: 'lotto',
+      component: () => import('./views/LottoView.vue')
     }
   ]
 })

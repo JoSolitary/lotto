@@ -1,0 +1,50 @@
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/mixins";
+
+.form-control {
+  color: white;
+  background-color : #222222;
+  border: 0;
+}
+
+.form-control:focus {
+  color: white;
+  background-color : #222222;
+}
+
+.form-control::placeholder {
+  color: $secondary;
+}
+
+.bi-primary{
+  color: $primary
+}
+
+.bi-secondary{
+  color: $secondary
+}
+
+.bi-success{
+  color: $success
+}
+
+.bi-danger{
+  color: $danger
+}
+
+.bi-warning{
+  color: $warning
+}
+
+.bi-info{
+  color: $info
+}
+
+.bi-light{
+  color: $light
+}
+
+.bi-dark{
+  color: $dark
+}

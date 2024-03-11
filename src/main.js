@@ -1,5 +1,7 @@
-import 'bootstrap/dist/css/bootstrap.min.css'; // Bootstrap CSS
+import 'bootstrap/dist/css/bootstrap.min.css' // Bootstrap CSS
+import 'bootstrap-icons/font/bootstrap-icons.css' // Bootstrap Icons
 import './assets/main.css' // Custom CSS
+import './assets/custom.scss' // Custom Theme
 
 import { createApp } from 'vue'
 import App from './App.vue'

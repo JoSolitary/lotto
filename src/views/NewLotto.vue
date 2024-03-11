@@ -22,7 +22,7 @@
 
 <script>
 import { useStore } from '@/store'
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from 'uuid'
 
 export default {
   data(){
@@ -31,6 +31,7 @@ export default {
       lotto: {
         date: new Date().toJSON().slice(0,10),
         place: "",
+        games: {},
         players: {
           [uuidv4()]: {
             "name": "Josselin",

@@ -43,7 +43,9 @@ export default {
   },
   methods: {
     createLotto(){
-      this.store.lottos[uuidv4()] = this.lotto
+      const uuid = uuidv4()
+      this.store.myStore.lottos[uuid] = this.lotto
+      this.$router.push(`/lotto/${uuid}`)
     }
   }
 }

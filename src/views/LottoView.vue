@@ -69,6 +69,33 @@
       </div>
     </div>
   </div>
+
+  <footer class="footer fixed-bottom bg-dark">
+      <div class="row">
+        <div class="col-auto">
+          <div class="row align-items-center">
+            <div class="col-auto">
+              <select class="form-control" @change="selectGame()" v-model="current">
+                <option v-for="(game, gameId) in lotto.games" :value="gameId">
+                  {{ game.name }} - {{ GAMETYPES[game.type] }}
+                </option>
+              </select>
+            </div>
+            <div class="col">
+              <a @click="deleteGame()" role="button"><i class="bi-trash-fill bi-danger bi-m"></i></a>
+              <a @click="addGameForm = true" role="button"><i class="bi-plus-lg bi-success bi-m"></i></a>
+            </div>
+          </div>
+          
+        </div>
+        <div class="col">
+          <Game
+            :id="current"
+            :lottoId="id"
+          />
+      </div>
+    </div>
+  </footer>
 </template>
 
 <script>
@@ -99,12 +126,16 @@ export default {
         keepDraw: false,
       },
 
+      current: null,
+      addGameForm: false,
     }
   },
   created() {
     if (!this.store.myStore.lottos.hasOwnProperty(this.id)) this.$router.push("/404")
 
     this.lotto = this.store.myStore.lottos[this.id]
+
+    this.current = this.store.myStore.game
   },
   methods: {
     addGame(){
@@ -133,10 +164,15 @@ export default {
       }
       this.player.name = ""
     },
+    selectGame(){
+      this.store.myStore.game = this.current
+    },
+    deleteGame(){
+      delete this.lotto.games[this.current]
+    },
   },
 }
 </script>
 
 <style scoped>
-
 </style>

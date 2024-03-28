@@ -1,29 +1,32 @@
 <template>
   <div class="container">
-    <div class="row" @click="selectGame()">
-      <div class="col-auto">
-        {{ game.name }}
-      </div>
-      <div class="col-auto">
-        {{ GAMETYPES[game.type] }}
-      </div>
-    </div>
     <div class="row" v-if="selected">
       <div class="col">
-        <span v-for="number in game.draw"> {{ ` ${number} ` }} </span>
+        <div class="number-list">
+          <ul class="list-inline">
+            <li v-for="number in game.draw" class="list-inline-item">
+              <span class="fs-1"> {{ number }} </span>
+              <small> {{ DEPARTMENTS[number] }} </small>
+              <i class="bi bi-caret-right-fill bi-m"></i>
+            </li>
+            <li>
+              <input type="number" v-model="draw" class="form-control" id="draw"/>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="col">
-        <form class="row row-cols-lg-auto g-3 align-items-center">
+      <div class="col-auto">
+        <form class="row">
           <div class="col-auto">
             <input type="number" v-model="draw" class="form-control" id="draw"/>
           </div>
           <div class="col-auto">
-            <button @click.prevent="saveDraw(gameId)" class="btn btn-primary">
+            <button @click.prevent="saveDraw()" class="btn btn-primary">
               Ajouter
             </button>
           </div>
           <div class="col-auto">
-            <button @click.prevent="deleteGame(gameId)" class="btn btn-danger">
+            <button @click.prevent="deleteGame()" class="btn btn-danger">
               Supprimer
             </button>
           </div>
@@ -36,16 +39,18 @@
 <script>
 import { useStore } from "@/store"
 import GAMETYPES from "@/objects/gameTypes.js";
+import DEPARTMENTS from "@/objects/departments.js";
 
 export default {
   props: {
+    id: String,
     lottoId: String,
-    gameId: String,
   },
   data(){
     return {
       store: useStore(),
       GAMETYPES: GAMETYPES,
+      DEPARTMENTS: DEPARTMENTS,
 
       lotto: {},
       game: {},
@@ -55,26 +60,34 @@ export default {
   },
   computed: {
     selected() {
-      return this.store.myStore.game === this.gameId
+      return this.store.myStore.game === this.id
     }
   },
   mounted(){
     this.lotto = this.store.myStore.lottos[this.lottoId]
-    this.game = this.lotto.games[this.gameId]
+    this.game = this.lotto.games[this.id]
+  },
+  updated(){
+    this.lotto = this.store.myStore.lottos[this.lottoId]
+    this.game = this.lotto.games[this.id]
   },
   methods: {
-    saveDraw(gameId){
-      this.lotto.games[gameId].draw.push(this.draw)
+    saveDraw(){
+      this.lotto.games[this.id].draw.push(this.draw)
       this.draw = ""
     },
-    deleteGame(gameId){
-      delete this.lotto.games[gameId]
+    deleteGame(){
+      delete this.lotto.games[this.id]
     },
-    selectGame(){
-      if (this.selected) delete this.store.myStore.game
-      else this.store.myStore.game = this.gameId
-    }
   }
 }
 
 </script>
+
+<style scoped>
+
+.number-list{
+  width: 100%;
+  overflow-x: auto;
+}
+</style>

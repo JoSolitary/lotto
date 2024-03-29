@@ -7,7 +7,7 @@
             <input
               type="number"
               v-model="grid.numbers[rowIndex][colIndex]"
-              :id="`${gridId}:${rowIndex}:${colIndex}`"
+              :id="`${id}:${rowIndex}:${colIndex}`"
               @input="handleInput"
               class="grid-input form-control"
               maxlength="2"
@@ -23,17 +23,15 @@
 
   <div class="row justify-content-between">
     <div class="col-auto">
-      <a @click="editGrid()"
-        ><i
-          class="bi-pencil-square bi-m"
-          :class="edit ? 'bi-warning' : 'bi-light'"
-        ></i
-      ></a>
+      
     </div>
     <div class="col-auto">
-      <button @click="deleteGrid()" class="btn btn-danger">
-        Supprimer
-      </button>
+      <a @click="editGrid()" class="mx-1">
+        <i class="bi-pencil-square bi-m" :class="edit ? 'bi-warning' : 'bi-light'"></i>
+      </a>
+      <a @click="deleteGrid()" class="mx-1">
+        <i class="bi bi-trash-fill bi-danger bi-m"></i>
+      </a>
     </div>
   </div>
 </template>
@@ -45,7 +43,7 @@ export default {
   props: {
     lottoId: String,
     playerId: String,
-    gridId: String
+    id: String
   },
   data(){
     return {
@@ -61,7 +59,7 @@ export default {
   mounted(){
     this.lotto = this.store.myStore.lottos[this.lottoId]
     this.player = this.lotto.players[this.playerId]
-    this.grid = this.player.grids[this.gridId]
+    this.grid = this.player.grids[this.id]
   },
   computed: {
     computedGrid(){
@@ -112,7 +110,7 @@ export default {
       this.edit = !this.edit
     },
     deleteGrid() {
-      delete this.lotto.players[this.playerId].grids[this.gridId]
+      delete this.lotto.players[this.playerId].grids[this.id]
     },
     handleInput(event) {
       const value = event.target.value

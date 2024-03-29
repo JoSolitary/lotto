@@ -3,7 +3,7 @@
     <div class="col">
       <div class="number-list">
         <ul class="list-inline">
-          <li v-for="number in game.draw" class="list-inline-item">
+          <li v-for="number in drawList" class="list-inline-item">
             <div class="row">
               <div class="col-auto">
                 <div class="row">
@@ -22,7 +22,7 @@
           </li>
           <li class="list-inline-item">
             <form @submit.prevent="saveDraw()">
-              <input type="number" v-model="draw" id="draw" class="form-control draw-input"/>
+              <input required type="number" v-model="draw" id="draw" class="form-control draw-input" placeholder="Tirage">
             </form>
           </li>
         </ul>
@@ -61,6 +61,12 @@ export default {
   computed: {
     selected() {
       return this.store.myStore.game === this.id
+    },
+    drawList(){
+      const l = this.game.draw.length
+      const e = 8
+      if (l < e) return this.game.draw
+      return this.game.draw.slice(l-e)
     }
   },
   mounted(){
@@ -71,10 +77,9 @@ export default {
   },
   methods: {
     updateDraw(){
-      if (this.store.myStore.game && this.lotto.games && this.store.myStore.game in this.lotto.games){
-        this.lotto = this.store.myStore.lottos[this.lottoId]
+      this.lotto = this.store.myStore.lottos[this.lottoId]
+      if (this.id in this.lotto.games)
         this.game = this.lotto.games[this.id]
-      }
     },
     saveDraw(){
       this.lotto.games[this.id].draw.push(this.draw)

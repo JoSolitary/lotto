@@ -1,24 +1,19 @@
 <template>
   <Player v-for="(player, playerId) in lotto.players"
+    :id="playerId"
     :lottoId="id"
-    :playerId="playerId"
   />
 
   <div class="container mt-1">
     <div class="row justify-content-between">
       <div class="col-auto">
-        <h1 class="fw-light"> Ajouter un joueur </h1>
-      </div>
-      <div class="col-auto">
         <form class="row row-cols-lg-auto g-3 align-items-center">
           <div class="col-auto">
-            <label class="visually-hidden" for="player-name"> Nom </label>
-            <input type="text" v-model="player.name" class="form-control" id="player-name" placeholder="Nom"/>
+            <label class="visually-hidden" for="player-name"> Nouveau joueur </label>
+            <input type="text" v-model="player.name" class="form-control" id="player-name" placeholder="Nouveau joueur"/>
           </div>
           <div class="col-auto">
-            <button @click.prevent="addPlayer()" class="btn btn-primary">
-              Valider
-            </button>
+            <a @click="addPlayer()" role="button"><i class="bi-plus-lg bi-success bi-m"></i></a>
           </div>
         </form>
       </div>
@@ -61,6 +56,7 @@
             </div>
             <div class="col-2">
               <button class="btn btn-primary" @click.prevent="addGame()"> Valider </button>
+              <button class="btn btn-danger" @click.prevent="addGameForm = false"> Annuler </button>
             </div>
           </div>
           </form>

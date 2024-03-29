@@ -1,37 +1,35 @@
 <template>
-  <div class="container">
-    <div class="row" v-if="selected">
-      <div class="col">
-        <div class="number-list">
-          <ul class="list-inline">
-            <li v-for="number in game.draw" class="list-inline-item">
-              <span class="fs-1"> {{ number }} </span>
-              <small> {{ DEPARTMENTS[number] }} </small>
-              <i class="bi bi-caret-right-fill bi-m"></i>
-            </li>
-            <li>
-              <input type="number" v-model="draw" class="form-control" id="draw"/>
-            </li>
-          </ul>
-        </div>
+  <div class="row align-items-center" v-if="selected">
+    <div class="col">
+      <div class="number-list">
+        <ul class="list-inline">
+          <li v-for="number in game.draw" class="list-inline-item">
+            <div class="row">
+              <div class="col-auto">
+                <div class="row">
+                  <div class="col text-center">
+                      <span class="fs-1"> {{ number }} </span>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <small> {{ DEPARTMENTS[number] }} </small>
+                  </div>
+              </div>
+              <div class="col">
+                <i class="bi bi-caret-right-fill bi-m"></i>
+              </div>
+            </div>
+          </li>
+          <li class="list-inline-item">
+            <form @submit.prevent="saveDraw()">
+              <input type="number" v-model="draw" id="draw" class="form-control draw-input"/>
+            </form>
+          </li>
+        </ul>
       </div>
-      <div class="col-auto">
-        <form class="row">
-          <div class="col-auto">
-            <input type="number" v-model="draw" class="form-control" id="draw"/>
-          </div>
-          <div class="col-auto">
-            <button @click.prevent="saveDraw()" class="btn btn-primary">
-              Ajouter
-            </button>
-          </div>
-          <div class="col-auto">
-            <button @click.prevent="deleteGame()" class="btn btn-danger">
-              Supprimer
-            </button>
-          </div>
-        </form>
-      </div>
+    </div>
+    <div class="col-auto me-2 text-center">
+      <a @click="deleteDraw()"><i class="bi bi-backspace-fill bi-danger bi-m"></i></a>
     </div>
   </div>
 </template>
@@ -53,7 +51,9 @@ export default {
       DEPARTMENTS: DEPARTMENTS,
 
       lotto: {},
-      game: {},
+      game: {
+        draw: []
+      },
 
       draw: {},
     }
@@ -64,20 +64,25 @@ export default {
     }
   },
   mounted(){
-    this.lotto = this.store.myStore.lottos[this.lottoId]
-    this.game = this.lotto.games[this.id]
+    this.updateDraw()
   },
   updated(){
-    this.lotto = this.store.myStore.lottos[this.lottoId]
-    this.game = this.lotto.games[this.id]
+    this.updateDraw()
   },
   methods: {
+    updateDraw(){
+      if (this.store.myStore.game && this.lotto.games && this.store.myStore.game in this.lotto.games){
+        this.lotto = this.store.myStore.lottos[this.lottoId]
+        this.game = this.lotto.games[this.id]
+      }
+    },
     saveDraw(){
       this.lotto.games[this.id].draw.push(this.draw)
       this.draw = ""
     },
-    deleteGame(){
-      delete this.lotto.games[this.id]
+    deleteDraw(){
+      if (this.lotto.games && this.id in this.lotto.games && this.lotto.games[this.id].draw && this.lotto.games[this.id].draw.length > 0)
+      this.lotto.games[this.id].draw.pop()
     },
   }
 }
@@ -89,5 +94,12 @@ export default {
 .number-list{
   width: 100%;
   overflow-x: auto;
+  white-space: nowrap;
+}
+
+.draw-input{
+  height: 4rem; 
+  width: 50%;
+  font-size: large;
 }
 </style>

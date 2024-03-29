@@ -25,51 +25,6 @@
     </div>
   </div>
 
-  <div class="container mt-1">
-    <div class="row">
-      <div class="col">
-        <h1 class="fw-light"> Tirages </h1>
-      </div>
-    </div>
-    <div class="row" v-for="(game, gameId) in lotto.games">
-      <div class="col">
-        <Game
-          :lottoId="id"
-          :gameId="gameId"
-        />
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <form>
-          <div class="row">
-            <div class="col">
-              <div class="form-control">
-                <input v-model="game.name" class="form-control" type="text" id="game-name" placeholder="Nom">
-              </div>
-            </div>
-            <div class="col">
-              <select class="form-control" v-model="game.type">
-                <option v-for="(value, key) in GAMETYPES" :value="key"> {{ value }} </option>
-              </select>
-            </div>
-            <div class="col">
-              <div class="form-check">
-                <input v-model="game.keepDraw" class="form-check-input" type="checkbox" id="keep-draw">
-                <label class="form-check-label" for="keep-draw">
-                  Continuer le tirage
-                </label>
-              </div>
-            </div>
-            <div class="col">
-              <button class="btn btn-primary" @click.prevent="addGame()"> Valider </button>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
-
   <footer class="footer fixed-bottom bg-dark">
       <div class="row">
         <div class="col-auto">
@@ -86,9 +41,31 @@
               <a @click="addGameForm = true" role="button"><i class="bi-plus-lg bi-success bi-m"></i></a>
             </div>
           </div>
-          
         </div>
-        <div class="col">
+        <div v-if="addGameForm" class="col">
+          <form>
+          <div class="row align-items-center">
+            <div class="col-2">
+              <input v-model="game.name" class="form-control" type="text" id="game-name" placeholder="Nom">
+            </div>
+            <div class="col-2">
+              <select class="form-control" v-model="game.type">
+                <option v-for="(value, key) in GAMETYPES" :value="key"> {{ value }} </option>
+              </select>
+            </div>
+            <div class="col-2">
+              <input v-model="game.keepDraw" class="form-check-input" type="checkbox" id="keep-draw">
+              <label class="form-check-label" for="keep-draw">
+                Continuer le tirage
+              </label>
+            </div>
+            <div class="col-2">
+              <button class="btn btn-primary" @click.prevent="addGame()"> Valider </button>
+            </div>
+          </div>
+          </form>
+        </div>
+        <div class="col ms-5 ps-5" v-else>
           <Game
             :id="current"
             :lottoId="id"
@@ -156,6 +133,9 @@ export default {
       const uuid = v4()
       this.lotto.games[uuid] = game
       this.store.myStore.game = uuid
+      this.current = uuid
+
+      this.addGameForm = false
     },
     addPlayer() {
       this.lotto.players[v4()] = {
